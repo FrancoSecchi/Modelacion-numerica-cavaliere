@@ -1,0 +1,59 @@
+\section{Integración}
+
+\subsection{16/07/24}
+
+Conociendo los valores de $f(x)$ presentados en la siguiente tabla
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c| } 
+ \hline
+ $x$ & $3.4$ & $3.6$ & $3.8$ & $4.0$& $4.2$ & $4.4$ & $4.6$ & $4.8$ & $5.0$ \\ 
+ \hline
+ $f(x)$ & $12.426$ & $12.208$ & $11.984$ & $11.573$ & $11.399$ & $11.270$ & $11.190$ & $11.254$ & $11.304$ \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+
+
+\begin{enumerate}
+    \item[a)]Utiliza la regla del Trapecio para aproximar el valor de la integral de la función $f(x)$ sobre el intervalo $[3.4 ; 5.0]$ tomando $h = 0.2$ (1 punto)
+    \item[b)] Repetir el caso anterior con $h = 0.4$ y utilizar estos dos resultados del método para obtener una mejor aproximación de la integral solicitada. Justificar respuesta. (2 puntos)
+    \item[c)] ¿Es posible obtener una estimación de la integral buscada mejor que todas las aproximaciones obtenidas anteriormente?. Explicar cómo justificando la respuesta (1 punto)
+\end{enumerate}
+
+
+\subsubsection{Punto a}
+
+\[
+T(h) \approx \frac{0.2}{2} \left[ 12.426 + 2 \left(12.208 + 11.984 + 11.573 + 11.399 + 11.270 + 11.190 + 11.254 \right) + 11.304 \right]
+\]
+
+\[
+I \approx 0.1 \cdot 185.086 = 18.5086
+\]
+
+ \subsubsection{Punto b}
+ 
+Utilizando la regla del Trapecio con \( h = 0.4 \):
+
+\[
+T(h) \approx \frac{0.4}{2} \left[ 12.426 + 2 \left(11.984 + 11.399 + 11.190 \right) + 11.304 \right]
+\]
+
+\[
+T(h) \approx 0.2 \cdot 93.832 = 18.5752
+\]
+
+Usando la extrapolación de Richardson para obtener una mejor aproximación:
+
+$$
+I_{\text{mejor}} = \frac{4I_{h/2} - I_{h}}{3}
+$$
+
+\[
+I_{\text{mejor}} = \frac{4 \cdot 18.5752 -  18.5086}{3} = 18.5974
+\]
+
+\subsubsection{Punto c}
+Para obtener una estimación mejor que las obtenidas anteriormente, se puede utilizar un valor de \( h \) más pequeño utilizar la extrapolación de Richardson, ya que es una técnica que mejora la precisión combinando resultados de diferentes valores de \( h \).

@@ -1,0 +1,481 @@
+\section{Problemas de valores iniciales (PVI)}
+
+Para este tipo de ejercicios, es \textbf{siempre hacer lo mismo}. Te aprendes a como diferenciar las cosas y después es todo mecánico, lo que si tenes que ser consistente con el tema de la precisión en las cifras, aclara que vas a usar siempre 4 decimales o 5 o 7 o los que se te de la gana.
+
+\subsection{Orden 1}
+
+\subsubsection{02/07/2024}
+La cantidad de $N$ de microbios de determinada especie evoluciona siguiendo la ley: 
+$$\frac{dN}{dt} = b - aN$$
+
+Con $a = 2$ y $b = 99$. 
+
+En el instante inicial ($t=0$) la población de microbios es $N_0 = 98000$. Se desea determinar numéricamente la evolución de la población.
+
+\begin{enumerate}
+    \item {Discretizar mediante el siguiente método 
+        \begin{equation*}
+\begin{aligned}
+u_{n+1} &= u_n + h f(t_n, u_n) \\
+\end{aligned}
+\end{equation*}
+\begin{align*}
+f(t_n, u_n) &= b - a u_n
+\end{align*}
+Adoptar para $h = 0,1$, avanzar tres pasos la solución numérica calculando $u_1, u_2, u_3$
+    }
+
+    \item { Repetir el punto anterior con el mismo valor \textbf{h} pero utilizando el siguiente método:
+    \begin{equation*}
+\begin{aligned}
+u_{n+1} &= u_n + h/2 [f(t_{n+1}, u_{n+1}) +f(t_{n}, u_{n}) ]
+\end{aligned}
+\end{equation*}
+\begin{align*}
+f(t_n, u_n) &= b - a u_n
+\end{align*}
+
+Existe algún motivo por el cual usted pudiera indicar que este método debería proporcionar una mejor aproximación numérica. Justifique su respuesta
+    }
+
+    \item {Determinar el máximo valor de \textbf{h} a partid del cual no se puede asegurar que las perturbaciones introducidas durante el calculo no se amplifiquen durante el cálculo de la solución numérica.}
+\end{enumerate}
+
+\subsubsubsection{Resolución}
+
+Para el punto 1, lo bueno es que ya nos dice todo, entonces solamente de ahí hay que calcular y ya esta, calculemos $u_1, u_2, u_3$
+
+El enunciado nos dice que parte de $t = 0$ y que $N_0 = 98000$, así que al principio va a ser así: 
+
+\begin{align*}
+    u_1 &= u_0 + h(b-a*98000) \\
+    u_1 &= 98000 + 0.1(99-2*98000)\\
+    u_1 &= 78409.9
+\end{align*}
+
+Ahora seguimos $u_2$
+
+\begin{align*}
+    u_2 &= 78409.9 + 0.1(99-2*78409.9)\\
+    u_2 &= 62737.82
+\end{align*}
+
+Por ultimo calculamos $u_3$
+
+\begin{align*}
+    u_3 &= 62737.82 + 0.1(99-2*62737.82) \\
+    u_3 &= 50200.156
+\end{align*}
+
+Por lo tanto la solucion es: 
+\begin{align*}
+    u_1 &= 78409.9\\
+    u_2 &= 62737.82\\
+    u_3 &= 50200.156
+\end{align*}
+
+
+Vayamos al punto 2 ahora, esto es RK2, la idea es exactamente la misma, solo cambian algunas cositas. Tenemos lo siguiente:
+
+$$ u_{n+1} = u_n + h/2 [f(t_{n+1}, u_{n+1}) +f(t_{n}, u_{n}) ] $$
+
+Tenemos que hacer exactamente lo mismo que antes: 
+\begin{align*}
+    u_{1} &= u_0 + h/2 [f(t_{1}, u_{1}) +f(t_{0}, u_{0}) ]\\
+    u_{1} &= 98000 + 0.1/2 [(b -au_1) + (b - a*98000)]
+\end{align*}
+
+Y lo que tenes que hacer ahí es despejar $u_1$ y así en cada iteración.
+
+La pregunta teórica es que aunque el método RK2 y el método de Euler explícito pueden compartir una condición de estabilidad similar, como $h<2\tau h<2\tau$, RK2 sigue siendo más preciso debido a su mayor orden de convergencia.
+
+El hecho de que RK2 sea de segundo orden significa que el error local por paso es del orden de $O(h^3)$, y el error global es del orden de $O(h^2)$. Por otro lado, el método de Euler explícito es de primer orden, con un error local por paso de O($h^2$) y un error global de $O(h)$. Esto hace que, incluso con la misma condición de estabilidad, RK2 proporcione una aproximación más precisa para un mismo tamaño de paso $h$.
+
+
+Para el punto 3, lo que se hace es analizar la estabilidad. Siempre que te hablen de valor máximo o mínimo que puede tomar $h$ o algún valor de esos, es analizar estabilidad. Y se hace de la siguiente forma.
+
+El método explícito que estás utilizando se describe como:
+\[
+u_{n+1} = u_n + h(b - au_n)
+\]
+
+Podemos analizar la estabilidad considerando la solución de la ecuación linealizada. La solución del método de Euler explícito es estable si:
+
+\[
+|1 - h a| < 1
+\]
+
+Este criterio asegura que las perturbaciones no se amplifican, lo que nos lleva a la siguiente condición para \( h \):
+
+\[
+-1 < 1 - h a < 1
+\]
+
+Desglosando esta desigualdad:
+
+\[
+-1 < 1 - h a \quad \text{y} \quad 1 - h a < 1
+\]
+
+\begin{enumerate}
+\item De la primera parte: \( -1 < 1 - h a \)
+    \[
+    h a < 2 \quad \text{por lo tanto} \quad h < \frac{2}{a}
+    \]
+\item De la segunda parte: \( 1 - h a < 1 \)
+    \[
+    0 < h
+    \]
+\end{enumerate}
+
+Por lo tanto, la condición final para la estabilidad es:
+
+\[
+0 < h < \frac{2}{a}
+\]
+
+Dado que \( a = 2 \), tenemos:
+
+\[
+0 < h < \frac{2}{2}
+\]
+
+\[
+0 < h < 1
+\]
+El valor máximo de \( h \) que asegura que las perturbaciones introducidas durante el cálculo no se amplifiquen es \( 1 \). Si \( h \) es mayor a \( 1 \), el método podría volverse inestable, y las perturbaciones numéricas podrían amplificarse.
+
+\subsubsection{12/07/2024}
+
+Un proyectil de masa \(m = 0,11 \, \text{kg}\) que se deja caer sin velocidad inicial acelera debido a la fuerza de la gravedad y a su vez se frena por la resistencia del aire, con lo cual su ecuación de movimiento es (considerando y positivo hacia abajo)
+
+\[
+m \frac{dv}{dt} = mg - k|v|
+\]
+
+donde \(g = 9,8 \, \text{m/s}^2\) es la gravedad y \(k = 0,002 \, \text{kg/m}\) el coeficiente de resistencia del aire.
+
+\begin{enumerate}
+    \item[a)] Hallar la velocidad que alcanza el proyectil para \(t = 0,3 \, \text{s}\) utilizando el método de Euler para integrar la ecuación diferencial planteada. Sugerencia: usar un paso de cálculo de \(0,1 \, \text{s}\). (1 punto)
+    \item[b)] Repetir el punto anterior utilizando el método de Runge-Kutta de orden 2. (2 puntos)
+    \item[c)] Con los resultados disponibles, es posible estimar el error correspondiente al método de Euler. Justificar la respuesta. (1 punto)
+\end{enumerate}
+
+\subsubsubsection{Resolución}
+
+
+Vamos a despejar la derivada para así tener nuestro $f(t,u,v)$
+
+$$ \frac{dv}{dt} = \frac{mg - kv^2}{m}$$
+
+
+Y nos pide discretizar con euler, o sea que puede ser el explicito o el implícito, podes usar el que se te de la gana. 
+
+La idea es la misma que antes, solo que te hago la siguiente pregunta  ¿cuál es $v_0$? La rta es $v_0 = 0$, esto es porque en el enunciado nos dicen que el proyectil parte sin velocidad inicial, entonces podemos asumir que $v_0 = 0$
+
+Tu $t_0$ es 0, ya que no te lo especifica podes asumir que si. Y vas hasta $t = 0.3$ con un paso $h = 0.1$
+
+Para el punto $b$ que es RK2, haces lo mismo que hicimos en el ejercicio anterior (es todo bastante igual y mecánico).
+
+Y para el punto $c$, el error de Euler en relación con RK2 se puede estimar como la diferencia entre los resultados obtenidos por ambos métodos. Si $uEuler(0.3)$ es el valor aproximado utilizando Euler y $uRK2(0.3)$ es el valor utilizando RK2, entonces el error del método de Euler se estima como:
+$$\text{Error de Euler} \approx uRK2(0.3)-uEuler(0.3)$$
+
+\subsubsection{12/12/2023}
+
+Dado el siguiente problema de valores iniciales
+
+\[
+ \frac{dy}{dt} = \cos{y} + \frac{1}{2}t
+\]
+
+
+donde $y_0 = -1$.
+
+Plantear el problema numérico con Euler explicito y calcular la solucion aproximada para t = 1, utilizando 4 pasos de tiempo. 
+
+\subsubsubsection{Resolución}
+
+Euler explicito es el mas simple que dice 
+
+$$u_{n+1} = u_n + hf(t_n,u_n)$$
+
+Es igual que los anteriores ejercicios, lo unico que no te dicen tan directo es el valor de $h$. 
+
+Nos piden que calculemos la solucion para $t=1$ con 4 pasos de tiempo, lo que quiere decir que $h = \frac{1}{4} = 0.25$.
+
+Y listo ahí planteas la discretización que seria: 
+
+$$u_{n+1} = u_n + h(\cos{u_n} + \frac{1}{2} t_n)$$
+
+Y tu $t$ parte de 0 hasta 1, con $h =0.25$.  
+
+
+
+\subsubsection{19/07/2024}
+
+Dado el siguiente problema de valores iniciales
+
+\[
+ \frac{dy}{dt} = 1 - y
+\]
+
+
+donde $y_0 = 0$.
+
+\begin{enumerate}
+    \item[a)] Determine el valor aproximado de $y$ para $t=1$ utilizando Euler explicito. Utilizando un paso de tiempo tal que haya que aplicar el método 2 veces (1 punto)
+    \item[b)] Repetir el punto anterior utilizando el método de Euler implicito. (2 puntos)
+    \item[c)] Analizar la estabilidad numérica de ambos métodos y calcular el paso de tiempo crítico en caso de ser necesario. Justificar la respuesta. (1 punto)
+\end{enumerate}
+
+
+\subsubsubsection{Resolución}
+
+El punto A y B lo sabemos hacer, así que vamos a ir al punto C que es el que no hicimos. 
+
+
+Para Euler explícito sabemos que tiene esta ecuación:
+
+\[
+y_{n+1} = y_n + h f(y_n, t_n)
+\]
+
+Sustituyendo \( f(y_n, t_n) = 1 - y_n \):
+
+\[
+y_{n+1} = y_n + h (1 - y_n)
+\]
+
+\[
+y_{n+1} = y_n + h - h y_n
+\]
+
+\[
+y_{n+1} = (1 - h) y_n + h
+\]
+
+El análisis de estabilidad se centra en la parte que multiplica a \( y_n \), que es \( 1 - h \). La condición de estabilidad para el método de Euler explícito es que el valor absoluto del factor de amplificación debe ser menor o igual a 1:
+
+\[
+|1 - h| \leq 1
+\]
+
+Entonces resolvemos esta desigualdad:
+
+\[
+-1 \leq 1 - h \leq 1
+\]
+
+\[
+0 \leq h \leq 2
+\]
+
+Por lo tanto, el método de Euler explícito es estable para \( h \leq 2 \). El paso de tiempo crítico, \( h_{\text{crítico}} \), es 2. Si \( h > 2 \), el método se vuelve inestable.
+
+Y para el Euler implícito tenemos su ecuación que es:
+
+\[
+y_{n+1} = y_n + h f(y_{n+1}, t_{n+1})
+\]
+
+Sustituyendo \( f(y_{n+1}, t_{n+1}) = 1 - y_{n+1} \):
+
+\[
+y_{n+1} = y_n + h (1 - y_{n+1})
+\]
+
+\[
+y_{n+1} = y_n + h - h y_{n+1}
+\]
+
+\[
+y_{n+1} + h y_{n+1} = y_n + h
+\]
+
+\[
+y_{n+1} (1 + h) = y_n + h
+\]
+
+\[
+y_{n+1} = \frac{y_n + h}{1 + h}
+\]
+
+Para el método de Euler implícito, el factor de amplificación es:
+
+\[
+\frac{1}{1 + h}
+\]
+
+El método es estable si el valor absoluto del factor de amplificación es menor o igual a 1:
+
+\[
+\left|\frac{1}{1 + h}\right| \leq 1
+\]
+
+Esta condición es \textbf{siempre cierta} para cualquier \( h \geq 0 \), lo que significa que el método de Euler implícito es incondicionalmente estable. No hay un paso de tiempo crítico que deba calcularse, ya que el método es estable para cualquier \( h \).
+
+
+
+
+\subsection{Orden mayor o igual a 2}
+
+No hay muchos finales con este tipo de ejercicios. Hago un par que encontré. La lógica es \textbf{siempre} la misma.
+
+\subsubsection{30/07/24}
+Dado el siguiente problema de valores iniciales
+
+$$
+    \frac{d^2y}{dt^2} = t^2
+$$
+Con $y_0 = 0$ y $\frac{dy}{dt}_0 = 1$
+
+\begin{enumerate}
+    \item[a)] Discretizar por el método de Euler Explicito y dejar planteado el problema numérico resultante para un paso de tiempo $k$ genérico (1 punto)
+    \item[b)] Tomar $k = 0.1$ y obtener una aproximación de y en $t=0.3$ (usando el problema numérico definido en el punto anterior) (2 puntos)
+    \item[c)] Discretizar por el método de Euler implicito. Calcular para un solo paso de tiempo con $k=0.1$ (1 punto)
+\end{enumerate}
+
+\subsubsubsection{Resolución}
+
+Para hacer el punto (a) recordemos lo que habíamos dicho en las preliminares: 
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+u' = f(t,u,v) \\
+v' = g(t,u,v)
+\end{array}
+\right.
+\end{equation}
+
+
+Lo que hacemos es hacer un cambio de variables. Vamos a decir lo siguiente 
+$$v(t) = \frac{dy}{dt'}$$
+$$u(t) = y(t)$$
+
+Entonces si nosotros derivamos $u(t)$, tenemos a $v(t)$ y si derivamos $v(t)$, estaría representando a $y''$. Por lo tanto tendríamos lo siguiente:
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+u' = v(t) \\
+v' = y'' = t^2
+\end{array}
+\right.
+\end{equation}
+
+En estos casos, hay que discretizar las \textbf{dos} ecuaciónes. Y nos quedaria así 
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+u_{n+1} = u_n + kv_n(t) \\
+v_{n+1} = v_n + kt_n^2
+\end{array}
+\right.
+\end{equation}
+
+Y este es el problema numérico resultante para un paso de tiempo k genérico.
+
+Para el punto (b) solo queda resolver. Vamos a calcular los valores de \( u \) y \( v \) para \( t = 0.1 \), \( t = 0.2 \), y \( t = 0.3 \), usando \( k = 0.1 \).
+
+\begin{itemize}
+    \item Para \( t = 0.1 \):
+    \[
+    u_1 = u_0 + k v_0 = 0 + 0.1 \times 1 = 0.1
+    \]
+    \[
+    v_1 = v_0 + k t_0^2 = 1 + 0.1 \times 0^2 = 1
+    \]
+    
+    \item Para \( t = 0.2 \):
+    \[
+    u_2 = u_1 + k v_1 = 0.1 + 0.1 \times 1 = 0.2
+    \]
+    \[
+    v_2 = v_1 + k t_1^2 = 1 + 0.1 \times 0.1^2 = 1 + 0.001 = 1.001
+    \]
+    
+    \item Para \( t = 0.3 \):
+    \[
+    u_3 = u_2 + k v_2 = 0.2 + 0.1 \times 1.001 = 0.2 + 0.1001 = 0.3001
+    \]
+    \[
+    v_3 = v_2 + k t_2^2 = 1.001 + 0.1 \times 0.2^2 = 1.001 + 0.004 = 1.005
+    \]
+\end{itemize}
+
+Por lo tanto, la aproximación de \( y \) (que es \( u \)) en \( t = 0.3 \) es \( y(0.3) \approx 0.3001 \).
+
+Y ahora resolvamos el punto C. 
+Aplicando el método de Euler implícito, las ecuaciónes son:
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+u_{n+1} = u_n + k v_{n+1} \\
+v_{n+1} = v_n + k t_{n+1}^2
+\end{array}
+\right.
+\end{equation}
+
+Con \( k = 0.1 \), vamos a calcular \( u_1 \) y \( v_1 \):
+
+Primero vamos a tener que calcular $v_1$, ya que lo necesitamos para calcular $u_1$.
+
+\[
+v_1 = v_0 + k t_1^2 = 1 + 0.1 \times 0.1^2 = 1.001
+\]
+\[
+u_1 = u_0 + k v_1 = 0 + 0.1 \times 1.001 = 0.1001
+\]
+
+Por lo tanto, para un solo paso de tiempo con \( k = 0.1 \), tenemos:
+
+\[
+u_1 \approx 0.1001, \quad v_1 \approx 1.001
+\]
+\subsubsection{18/12/13}
+
+Considere el siguiente oscilador armónico: 
+
+$$
+    \frac{d^2\theta}{dt^2} + \frac{g}{L}\theta = 0
+$$
+
+Con $g=9.8 \frac{m}{s^2}$, $L = 0.49m$, $\theta_0 = \frac{\pi}{20}$ y $\frac{d\theta}{dt}_0 = 0$
+
+
+\begin{enumerate}
+    \item[a)] Discretizar por el método de Euler Explicito 
+\end{enumerate}
+
+
+\subsubsubsection{Resolución}
+
+Se plantea el mismo cambio de variables del anterior ejercicio: 
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+\theta' = v(t) \\
+v' = \theta'' = -\frac{g}{L}\theta
+\end{array}
+\right.
+\end{equation}
+
+
+Entonces con esta info, discretizamos: 
+\begin{equation}
+\left\{
+\begin{array}{l}
+\theta_{n+1} = \theta_n + k v_{n+1} \\
+v_{n+1} = v_n + k (-\frac{g}{L}\theta_n)
+\end{array}
+\right.
+\end{equation}
+
+Y listo. Si te piden para un tiempo especifico, empezas a reemplazar los valores e iteras.
+
+
+
