@@ -1,0 +1,79 @@
+\section{Preguntas teóricas}
+\subsection{06/08/24}
+\subsubsection{Pregunta 2}
+Indicar bajo que condición tiene solución única el sistema de ecuaciones lineales resultante de la discretización por diferencias finitas centradas del siguiente problema de valores de contorno
+
+$$y'' = p(x)y' + q(x) + r(x) $$
+
+para $a \leq x \leq b$ con $y(a) = \alpha$, $y(b) = \beta$
+
+\subsubsubsection{Respuesta}
+La condición para que el sistema de ecuaciones lineales resultante tenga solución única es que la matriz asociada al sistema sea \textbf{no singular}. Esto se garantiza comúnmente si la matriz es \textbf{estrictamente diagonal dominante} o si el determinante de la matriz es diferente de cero.
+
+
+\subsection{02/07/24}
+\subsubsection{Pregunta 1}
+Dada una función $f(x)$ y una aproximación $\alpha*$ que es una de sus raíces, indicar cómo se puede estimar una cota de $| \alpha* - \alpha |$. Se aclara que se desconoce el método utilizado para obtener $\alpha*$ pero se dispone de una expresión para calcular la derivada primera de $f$. Justificar metodologia.
+
+\subsubsubsection{Respuesta}
+Para estimar el error  $| \alpha* - \alpha |$ donde $\alpha*$ es una aproximación de una raíz $\alpha$ de una función $f(x)$, se puede utilizar la siguiente estrategia:
+
+\begin{enumerate}
+    \item {Calcula la derivada de $f(x)$ en $\alpha$*, es decir, $f'(\alpha)$*}
+    \item {Evalúa el residuo $f(\alpha*)$}
+    \item {Estima el error utilizando la relación: 
+    $$ | \alpha* - \alpha |  = \frac{|f(\alpha*)|}{f'(\alpha*)}$$}
+\end{enumerate}
+
+Este método se basa en una aproximación lineal de la función alrededor de $\alpha*$.
+
+
+\subsubsection{Pregunta 2}
+Indicar cómo se puede estimar el error cometido al resolver un sistema de ecuaciones lineales mediante el método de eliminación de Gauss.
+
+\subsubsubsection{Respuesta}
+El error cometido al resolver un sistema de ecuaciones lineales mediante el método de eliminación de Gauss puede ser estimado utilizando la norma residual. Sea $x$ la solución calculada y $A$ la matriz del sistema, el error se puede estimar calculando el residuo $r=b-Ax$ . El error en la solución es proporcional a $|| r ||$.
+
+\subsection{16/07/24}
+
+\subsubsection{Pregunta 1}
+Explique el objetivo de la extrapolación de Richardson.
+
+\subsubsubsection{Respuesta}
+La extrapolación de Richardson es una técnica que se utiliza para mejorar la precisión de una aproximación numérica al utilizar resultados obtenidos con diferentes tamaños de paso o incrementos. El objetivo es eliminar el término de error de orden más bajo para obtener una mejor aproximación.
+
+
+
+\subsection{30/07/24}
+\subsubsection{Pregunta 1}
+Explicar en forma detallada que se entiende por covergencia cuadratica de un metodo iterativo. Proporcionar como ejemplo de ello algún método que se estudia en la materia incluyendo las condiciones para que la misma ocurra. 
+
+\subsubsubsection{Respuesta}
+La convergencia cuadrática de un método iterativo se refiere a que el error en la aproximación se reduce de manera proporcional al cuadrado del error en la iteración anterior. Es decir, si \( e_n \) es el error en la \( n \)-ésima iteración, entonces \( e_{n+1} \approx C e_n^2 \) para alguna constante \( C \).
+
+Un ejemplo es el método de Newton-Raphson. Este método tiene convergencia cuadrática bajo las condiciones mencionadas en la respuesta 2. La idea es que una vez que estamos cerca de la solución, cada iteración del método reduce el error de manera significativa, haciendo que el método sea muy eficiente.
+
+
+\subsection{19/12/23}
+\subsubsection{Pregunta 1}
+Explique que ventaja proporciona el uso de bases ortogonlaes en el metodo de ajuste por cuadrados minimos
+
+\subsubsubsection{Respuesta}
+En un ajuste típico por mínimos cuadrados, el problema se reduce a resolver un sistema de ecuaciones de la forma $A^TAc = A^TAb $, donde $A$ es la matriz de diseño, $c$ es el vector de coeficientes que se busca, y $b$ es el vector de observaciones. Si las columnas de $A$ son ortogonales, $A^TA$ se convierte en una matriz diagonal, lo que hace que resolver para $c$ sea mucho más sencillo y numéricamente estable, pues se evita el problema de multicolinealidad.
+
+\subsubsection{Pregunta 2}
+Bajo que condiciones el metodo de newton-raphson presenta convergencia cuadrática. Justifique su respuesta
+
+\subsubsubsection{Respuesta}
+El método de Newton-Raphson presenta convergencia cuadrática si se cumplen las siguientes condiciones:
+\begin{itemize}
+\item La función \( f(x) \) es suficientemente suave (es decir, \( f(x) \) tiene una derivada continua en un entorno de la raíz).
+\item La raíz \( \alpha \) es un punto simple, es decir, \( f'(\alpha) \neq 0 \).
+\item La aproximación inicial \( x_0 \) está suficientemente cerca de la raíz \( \alpha \).
+\end{itemize}
+
+Bajo estas condiciones, el error en la aproximación \( x_{n+1} \) está relacionado con el error en la aproximación anterior \( x_n \) por una relación cuadrática, es decir, 
+\[ 
+|x_{n+1} - \alpha| \approx C|x_n - \alpha|^2,
+\]
+donde \( C \) es una constante.
