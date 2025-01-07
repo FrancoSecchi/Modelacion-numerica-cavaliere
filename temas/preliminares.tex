@@ -14,7 +14,35 @@ $$
      \item {$h$} es el tamaño del paso (incremento de $t$) 
      \item {$f(y_n, t_n)$} es la función que define la EDO $y' = f(y,t)$
  \end{enumerate}
+ 
+Algo a aclarar es que $t_0 = 0$ siempre y cuando te digan lo contrario. Igual siempre es 0, no vi ejercicios que te den otro $t_0$.
 
+\subsubsection{Cálculo de $h$}
+
+La pregunta es ¿cuál es $h$? Bueno para los PVI te pueden dar el $h$ de las siguientes formas, te dan el valor de $h$, o te piden que cumpla cierto requisito. 
+
+El primer caso seria que te digan \textit{Con un paso de tiempo $h = 0,1$}.
+
+El segundo caso te pueden decir cosas asi:
+
+\begin{enumerate}
+    \item {Un solo avance, dos avances, etc.}
+    \item {Un paso de tiempo de calculo de 0,1}
+    \item Utilizando un paso de tiempo tal que haya que aplicar el metodo 2 veces
+    \item Utilizando 4 pasos de tiempo
+\end{enumerate}
+
+La gran pregunta es ¿que significa esto? Bueno a vos siempre te van a dar un tiempo al cual le vas a calcular su $y_n$, por ejemplo $t = 1$, entonces para calcular $h$ usas esta formula: 
+
+$$
+h = \frac{t_{final} - t_{inical}}{\text{cantidad de pasos}}
+$$
+
+Entonces si te dicen por ejemplo: 
+\textit{Calcular $u(t=1)$ con 4 pasos de tiempo}. Entonces 
+$$
+h = \frac{1 - 0}{4}
+$$
 
 \subsubsection{Ejemplos}
 Dada la siguiente ecuación diferencial: 
@@ -30,7 +58,6 @@ Sabiendo que $y(0) = 1$
 Para el punto 1, lo que hacemos es identificar cada termino de nuestra EDO sobre la expresión de euler implicito. 
 
 \begin{itemize}
-
     \item {$f(y_n, t_n) = -y + t + 1$}
 \end{itemize}
 
@@ -40,8 +67,7 @@ $$
 y_{n+1} = y_n + h  (-y + t + 1)
 $$
 
-
-Para el punto 2, solamente hay que hacer 1 iteración con $t = 1$ y con $h = 1$
+Para el punto 1, solamente hay que hacer 1 iteración con $t = 1$ y con $h = 1$
 
 Calculamos $y_1$. 
 
@@ -56,7 +82,7 @@ $$y_1 = 1  $$
 
 Entonces, con un solo avance de $h = 1$, calculamos $u(t = 1)$ y obtenemos que $u(1) = y_1 = 1$
 
-Para el punto 2 hay que hacer lo mismo pero 2 iteraciones.
+Para el punto 2 hay que hacer lo mismo pero 2 iteraciones y con $h = \frac{1}{2}$.
 \subsubsection{Euler explicito}
 $$
     y_{n+1} = y_n + h  f(y_{n + 1}, t_{n + 1})
